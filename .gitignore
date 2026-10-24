@@ -1,3 +1,4 @@
+
 # Terraform state and local configuration
 *.tfstate
 *.tfstate.*
@@ -13,7 +14,7 @@ crash.*.log
 *.pem
 *.key
 
-# Local overrides
+# Local Terraform overrides
 override.tf
 override.tf.json
 *_override.tf
