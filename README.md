@@ -16,30 +16,13 @@ The project is designed to be reusable: each user deploys their own budget in th
 
 ## Architecture
 
-```text
-              AWS User
-                  |
-                  v
-          Terraform CLI
-                  |
-                  v
-           AWS Budgets API
-                  |
-                  v
-         Monthly Cost Budget
-               $10 USD
-                  |
-        +---------+---------+
-        |         |         |
-       50%       80%       100%
-        |         |         |
-        +---------+---------+
-                  |
-                  v
-           Email Notifications
-```
+![Image Alt](https://github.com/LuthiraPeiris/aws-spendwise/blob/8f797aeaeb522fc0d7361e026457d645667c7703/docs/diagrams/spendwise-architecture.png)
 
-The architecture is intentionally simple. Terraform creates one AWS Budgets resource with three notification configurations. No EC2 instances, databases, or application servers are required.
+SpendWise uses Terraform to create one AWS Budgets resource with three actual-spending notification thresholds: 50%, 80%, and 100% of the monthly budget.
+
+The default monthly budget is $10 USD. Email notifications are configured for the subscriber address provided by each user.
+
+The architecture does not require EC2 instances, databases, Lambda functions, or continuously running application infrastructure.
 
 ## Technologies used
 
@@ -51,22 +34,32 @@ The architecture is intentionally simple. Terraform creates one AWS Budgets reso
 ## Project structure
 
 ```text
+## Project structure
+
+```text
 aws-spendwise/
+├── docs/
+│   ├── diagrams/
+│   │   └── spendwise-architecture.png
+│   └── screenshots/
+│       ├── 1-setup/
+│       │   └── project-structure.png
+│       └── 2-budget/
+│           ├── notification-verification1.png
+│           ├── notification-verification2.png
+│           ├── terraform-apply-success1.png
+│           └── terraform-apply-success2.png
 ├── terraform/
+│   ├── .terraform.lock.hcl
 │   ├── main.tf
 │   ├── variables.tf
-│   ├── terraform.tfvars.example
-│   └── terraform.tfvars
-├── docs/
-│   └── screenshots/
-│       ├── 01-setup/
-│       ├── 02-budget/
-│       └── 03-alert-testing/
+│   └── terraform.tfvars.example
 ├── .gitignore
+├── LICENSE
 └── README.md
 ```
 
-The real `terraform.tfvars` file is local and must not be committed to GitHub.
+The actual `terraform.tfvars` file contains user-specific configuration and is excluded from Git. Terraform state files and local working directories must also remain untracked.
 
 ## How the budget works
 
@@ -108,7 +101,7 @@ The final command identifies the active AWS identity. Never publish your AWS acc
 After publishing this project to GitHub, users can clone it with:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/aws-spendwise.git
+git clone https://github.com/LuthiraPeiris/aws-spendwise.git
 cd aws-spendwise
 ```
 
@@ -297,7 +290,11 @@ By completing SpendWise, users learn how to:
 
 ## Project status
 
-The initial SpendWise budget has been deployed and its three email subscriptions have been verified in the developer's AWS account. The public repository, documentation, and evidence screenshots should be completed before presenting the project as a fully documented beginner tutorial.
+The initial SpendWise deployment has been completed successfully. The monthly AWS budget was created, and the three email notification subscriptions were verified using the AWS CLI.
+
+The repository includes Terraform configuration, setup instructions, verification commands, screenshots, and an architecture diagram.
+
+Actual threshold-triggered email delivery has not yet been confirmed. This project is intended for educational use and does not enforce a hard spending limit.
 
 ## Contributing
 
@@ -305,4 +302,4 @@ Suggestions, improvements, and beginner-friendly documentation contributions are
 
 ## License
 
-Choose an open-source license before publishing the repository. The MIT License is a reasonable option if you want others to reuse and adapt this educational project.
+This project is licensed under the MIT License. See the LICENSE file for details.
